@@ -1,4 +1,4 @@
-package works.maatwerk.space;
+package works.maatwerk.space.windows;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -10,6 +10,10 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisValidatableTextField;
 import com.kotcrab.vis.ui.widget.VisWindow;
+import works.maatwerk.space.IdentificationScreen;
+import works.maatwerk.space.SpaceGame;
+import works.maatwerk.space.models.User;
+import works.maatwerk.space.networking.runnables.RegisterRunnable;
 
 public class RegisterWindow extends VisWindow {
 

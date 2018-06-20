@@ -1,4 +1,4 @@
-package works.maatwerk.space;
+package works.maatwerk.space.networking.networklisteners;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -10,8 +10,11 @@ import com.github.czyzby.websocket.WebSocket;
 import com.github.czyzby.websocket.WebSocketListener;
 import com.github.czyzby.websocket.data.WebSocketCloseCode;
 import com.github.czyzby.websocket.data.WebSocketException;
+import works.maatwerk.space.PlayingScreen;
+import works.maatwerk.space.SpaceGame;
+import works.maatwerk.space.networking.NetworkManager;
 
-class LocationSocketListener implements WebSocketListener {
+public class LocationSocketListener implements WebSocketListener {
 
 
     private final JsonReader jsonReader;

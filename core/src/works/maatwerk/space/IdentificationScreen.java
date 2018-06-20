@@ -5,8 +5,10 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import works.maatwerk.space.windows.LoginWindow;
+import works.maatwerk.space.windows.RegisterWindow;
 
-class IdentificationScreen extends ScreenAdapter {
+public class IdentificationScreen extends ScreenAdapter {
 
     private LoginWindow loginWindow;
     private RegisterWindow registerWindow;

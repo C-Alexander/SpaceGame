@@ -1,23 +1,31 @@
-package works.maatwerk.space;
+package works.maatwerk.space.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.kotcrab.vis.ui.widget.VisLabel;
+import works.maatwerk.space.GameUI;
+import works.maatwerk.space.models.Ship;
+import works.maatwerk.space.listeners.ShipClickListener;
+import works.maatwerk.space.SpaceGame;
 
-class ShipActor extends Actor {
+public class ShipActor extends Actor {
 
     private final VisLabel visLabel;
+    private SpaceGame spaceGame;
     private final Texture texture;
     private final Ship ship;
     private GameUI gameUI;
 
-    public ShipActor(Ship ship, GameUI gameUI) {
+    public ShipActor(Ship ship, GameUI gameUI, SpaceGame spaceGame) {
         this.gameUI = gameUI;
         this.ship = ship;
+        this.spaceGame = spaceGame;
 
-        texture = new Texture(Gdx.files.internal("Pirate.gif"));
+        spaceGame.setFactionForUser(ship.getCaptain());
+
+        texture = new Texture(Gdx.files.internal("factions/icons/" + ship.getCaptain().getFaction().getIcon()));
         visLabel = new VisLabel(ship.getCaptain().getUsername());
         setName(ship.getId());
 

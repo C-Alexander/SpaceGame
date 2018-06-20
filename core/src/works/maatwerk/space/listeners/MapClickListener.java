@@ -1,9 +1,10 @@
-package works.maatwerk.space;
+package works.maatwerk.space.listeners;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import works.maatwerk.space.GameUI;
 
-class MapClickListener extends ClickListener {
+public class MapClickListener extends ClickListener {
     private final GameUI gameUI;
 
     public MapClickListener(GameUI gameUI) {

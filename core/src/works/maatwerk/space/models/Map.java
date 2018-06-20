@@ -1,12 +1,14 @@
-package works.maatwerk.space;
+package works.maatwerk.space.models;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
+import works.maatwerk.space.models.Ship;
+import works.maatwerk.space.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Map {
+public class Map {
     private final String id;
     private final String name;
     public final List<Ship> ships = new ArrayList<>();
@@ -28,6 +30,8 @@ class Map {
                     ship.getInt("xDestination", (int)newShip.getLocation().x),
                     ship.getInt("yDestination", (int)newShip.getLocation().y)
                     ));
+
+            newShip.getCaptain().setFactionId(ship.get("users").child().getString("factionId"));
             this.ships.add(newShip);
         }
     }

@@ -13,6 +13,15 @@ import com.kotcrab.vis.ui.building.OneColumnTableBuilder;
 import com.kotcrab.vis.ui.building.OneRowTableBuilder;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import works.maatwerk.space.actors.BackgroundActor;
+import works.maatwerk.space.actors.FactionFlagActor;
+import works.maatwerk.space.actors.ShipActor;
+import works.maatwerk.space.listeners.MapClickListener;
+import works.maatwerk.space.listeners.setDestinationListener;
+import works.maatwerk.space.models.Map;
+import works.maatwerk.space.models.Ship;
+import works.maatwerk.space.models.User;
+import works.maatwerk.space.windows.FactionWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +39,7 @@ public class GameUI extends Stage {
     private VisLabel yCoordinatesName;
     private Group leftMenu;
     private final List<ShipActor> shipActors = new ArrayList<>();
+    private FactionFlagActor factionFlagActor;
 
     public GameUI(SpaceGame spaceGame, PlayingScreen playingScreen, AccountManager accountManager) {
         super();
@@ -72,6 +82,8 @@ public class GameUI extends Stage {
         selectedShipName = new VisLabel("None");
         Table coordinatesTable = initializeCoordinatesTable();
 
+        factionFlagActor = new FactionFlagActor("", null, this);
+        selectedInfoBuilder.append(factionFlagActor);
         selectedInfoBuilder.append(selectedShipName);
         selectedInfoBuilder.append(coordinatesTable);
         VisTextButton goToButton = new VisTextButton("Go To");
@@ -113,7 +125,10 @@ public class GameUI extends Stage {
     private CenteredTableBuilder initializePlayerInfoTable() {
         CenteredTableBuilder centeredTable = new CenteredTableBuilder();
         OneColumnTableBuilder playerInfoTableBuilder = new OneColumnTableBuilder();
-        playerInfoTableBuilder.append(new VisLabel(accountManager.getCurrentUser().getUsername()));
+        User user = accountManager.getCurrentUser();
+        playerInfoTableBuilder.append(new FactionFlagActor(user.getFaction().getFlag(),
+                new FactionWindow(user.getFaction()), this));
+        playerInfoTableBuilder.append(new VisLabel(user.getUsername()));
         OneRowTableBuilder creditsTableBuilder = new OneRowTableBuilder();
         VisLabel creditsCount = new VisLabel(spaceGame.getAccountManager().getCurrentUser().getCredits().toString());
         creditsTableBuilder.append(creditsCount);
@@ -142,7 +157,7 @@ public class GameUI extends Stage {
         for (Ship ship : map.ships) {
             if (ship.getCaptain().getUsername().equalsIgnoreCase(spaceGame.getAccountManager().getCurrentUser().getUsername()))
                 spaceGame.getAccountManager().setCurrentShip(ship);
-            ShipActor shipActor = new ShipActor(ship, this);
+            ShipActor shipActor = new ShipActor(ship, this, spaceGame);
             shipActors.add(shipActor);
             tacticalScreen.addActor(shipActor);
         }
@@ -152,7 +167,8 @@ public class GameUI extends Stage {
         setMapLocation((int) shipActor.getX(), (int) shipActor.getY());
 
         ShipActor selectedShipActor = shipActor;
-
+        factionFlagActor.setFlagFromName(selectedShipActor.getShip().getCaptain().getFaction().getFlag());
+        factionFlagActor.setVisible(true);
         selectedShipName.setText(shipActor.getShip().getCaptain().getUsername());
 
     }
@@ -160,6 +176,7 @@ public class GameUI extends Stage {
     public void selectedMapPosition(float x, float y) {
         setMapLocation((int) x, (int) y);
 
+        factionFlagActor.setVisible(false);
         selectedShipName.setText("Space");
     }
 
@@ -199,8 +216,6 @@ public class GameUI extends Stage {
             Vector2 location = shipActor.getShip().getLocation();
             Vector2 destination = shipActor.getShip().getDestination();
 
-            System.out.println(location);
-            System.out.println(destination);
 
             if (location != destination) {
                 location.lerp(destination, 0.1f);

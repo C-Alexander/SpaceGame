@@ -1,23 +1,28 @@
-package works.maatwerk.space;
+package works.maatwerk.space.networking.runnables;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.HttpRequestBuilder;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import works.maatwerk.space.models.Faction;
+import works.maatwerk.space.SpaceGame;
 
-class UpdateMapRunnable implements Runnable {
-    private final GameUI gameUI;
+import java.util.ArrayList;
+import java.util.List;
 
-    public UpdateMapRunnable(GameUI gameUI) {
-        this.gameUI = gameUI;
+public class GetFactionsRunnable implements Runnable {
+    private SpaceGame spaceGame;
+
+    public GetFactionsRunnable(SpaceGame spaceGame) {
+        this.spaceGame = spaceGame;
     }
 
     @Override
     public void run() {
         HttpRequestBuilder httpRequestBuilder = new HttpRequestBuilder();
         httpRequestBuilder.newRequest();
-        httpRequestBuilder.url("http://localhost:3000/maps?name=Sol");
+        httpRequestBuilder.url("http://localhost:3000/factions");
         httpRequestBuilder.method(Net.HttpMethods.GET);
 
         Gdx.net.sendHttpRequest(httpRequestBuilder.build(), new Net.HttpResponseListener() {
@@ -32,16 +37,24 @@ class UpdateMapRunnable implements Runnable {
                     JsonReader jsonReader = new JsonReader();
                     JsonValue rawMap = jsonReader.parse(httpResponse.getResultAsString());
 
-                    Map map = new Map(rawMap.child.getString("id"), rawMap.child.getString("name"));
+                    List<Faction> factions = new ArrayList<>();
+                    for (JsonValue jsonValue : rawMap) {
+                        Faction faction = new Faction(
+                                jsonValue.getString("id"),
+                                jsonValue.getString("name"),
+                                jsonValue.getFloat("tax"),
+                                jsonValue.getString("icon"),
+                                jsonValue.getString("flag")
+                        );
+                        factions.add(faction);
+                    }
 
-                    map.createShipsFromJson(rawMap.child.get("ships"));
-
-
-                    Gdx.app.postRunnable(() -> gameUI.replaceSolarSystem(map));
+                    Gdx.app.postRunnable(() -> spaceGame.setFactions(factions));
                 } catch (Exception e) {
                     Gdx.app.error("UpdateMap", e.getMessage(), e);
                 }
             }
+
 
             @Override
             public void failed(Throwable t) {

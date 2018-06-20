@@ -1,10 +1,12 @@
-package works.maatwerk.space;
+package works.maatwerk.space.models;
 
 public class User {
     private final String username;
     private String password;
     private Float credits;
     private String token;
+    private String factionId;
+    private Faction faction;
 
     public User(String username, String password, String token) {
         this.username = username;
@@ -19,7 +21,11 @@ public class User {
         this.token = token;
     }
 
-    public User(String username) {
+    public User(String username, String password, Float credits, String token, String factionId) {
+        this.password = password;
+        this.credits = credits;
+        this.token = token;
+        this.factionId = factionId;
         System.out.println(username);
         this.username = username;
     }
@@ -28,6 +34,11 @@ public class User {
 
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username) {
+
+        this.username = username;
     }
 
     public String getUsername() {
@@ -48,5 +59,21 @@ public class User {
 
     public void setCredits(Float credits) {
         this.credits = credits;
+    }
+
+    public String getFactionId() {
+        return factionId;
+    }
+
+    public void setFactionId(String factionId) {
+        this.factionId = factionId;
+    }
+
+    public void setFaction(Faction faction) {
+        this.faction = faction;
+    }
+
+    public Faction getFaction() {
+        return faction;
     }
 }

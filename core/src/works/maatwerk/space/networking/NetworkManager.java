@@ -1,12 +1,15 @@
-package works.maatwerk.space;
+package works.maatwerk.space.networking;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.github.czyzby.websocket.WebSocket;
 import com.github.czyzby.websocket.WebSockets;
+import works.maatwerk.space.networking.networklisteners.LocationSocketListener;
+import works.maatwerk.space.PlayingScreen;
+import works.maatwerk.space.SpaceGame;
 
-class NetworkManager {
+public class NetworkManager {
     private final PlayingScreen playingScreen;
     private final SpaceGame spaceGame;
     private final Json json;
@@ -22,7 +25,8 @@ class NetworkManager {
         ws = WebSockets.newSocket("ws://localhost:9000/game");
         ws.setSerializeAsString(true);
         ws.addListener(new LocationSocketListener(this, spaceGame, playingScreen));
-        ws.connect();
+
+        new Thread(() -> ws.connect()).start();
     }
 
     public void sendPacket(Object packet) {

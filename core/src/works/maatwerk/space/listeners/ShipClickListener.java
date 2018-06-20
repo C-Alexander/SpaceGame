@@ -1,9 +1,10 @@
-package works.maatwerk.space;
+package works.maatwerk.space.listeners;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import works.maatwerk.space.actors.ShipActor;
 
-class ShipClickListener extends ClickListener {
+public class ShipClickListener extends ClickListener {
     private final ShipActor shipActor;
 
     public ShipClickListener(ShipActor shipActor) {

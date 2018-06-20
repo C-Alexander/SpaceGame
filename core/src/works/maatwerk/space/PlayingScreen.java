@@ -7,8 +7,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import works.maatwerk.space.models.DestinationPacket;
+import works.maatwerk.space.networking.NetworkManager;
+import works.maatwerk.space.networking.runnables.UpdateMapRunnable;
 
-class PlayingScreen extends ScreenAdapter {
+public class PlayingScreen extends ScreenAdapter {
     private final TextureRegion background;
     private final NetworkManager networkManager;
     private SpriteBatch batch;

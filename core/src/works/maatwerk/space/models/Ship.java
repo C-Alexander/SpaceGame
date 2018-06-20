@@ -1,4 +1,4 @@
-package works.maatwerk.space;
+package works.maatwerk.space.models;
 
 import com.badlogic.gdx.math.Vector2;
 
