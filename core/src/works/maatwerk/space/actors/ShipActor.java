@@ -6,14 +6,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import works.maatwerk.space.GameUI;
-import works.maatwerk.space.models.Ship;
-import works.maatwerk.space.listeners.ShipClickListener;
 import works.maatwerk.space.SpaceGame;
+import works.maatwerk.space.listeners.ShipClickListener;
+import works.maatwerk.space.models.Ship;
 
 public class ShipActor extends Actor {
 
     private final VisLabel visLabel;
-    private SpaceGame spaceGame;
     private final Texture texture;
     private final Ship ship;
     private GameUI gameUI;
@@ -21,7 +20,6 @@ public class ShipActor extends Actor {
     public ShipActor(Ship ship, GameUI gameUI, SpaceGame spaceGame) {
         this.gameUI = gameUI;
         this.ship = ship;
-        this.spaceGame = spaceGame;
 
         spaceGame.setFactionForUser(ship.getCaptain());
 

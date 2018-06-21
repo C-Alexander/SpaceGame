@@ -32,6 +32,7 @@ public class FactionFlagActor extends Actor {
                 }
             }
         });
+
         this.setSize(this.flag.getWidth(), this.flag.getHeight());
     }
 

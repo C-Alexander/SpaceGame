@@ -4,11 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.ObjectMap;
 import works.maatwerk.space.SpaceGame;
 import works.maatwerk.space.models.Faction;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FactionsHTTPResponseListener implements Net.HttpResponseListener {
 
@@ -29,16 +27,19 @@ public class FactionsHTTPResponseListener implements Net.HttpResponseListener {
             Gdx.app.error("Networking", "Set Factions");
             JsonReader jsonReader = new JsonReader();
             JsonValue rawMap = jsonReader.parse(httpResponse.getResultAsString());
-            List<Faction> factions = getFactionsFromJson(rawMap);
+            ObjectMap<String, Faction> factions = getFactionsFromJson(rawMap);
 
-            Gdx.app.postRunnable(() -> spaceGame.setFactions(factions));
+            Gdx.app.postRunnable(() -> {
+                spaceGame.setFactions(factions);
+                spaceGame.setFactionForUser(spaceGame.getAccountManager().getCurrentUser());
+            });
         } catch (Exception e) {
             Gdx.app.error("UpdateMap", e.getMessage(), e);
         }
     }
 
-    private List<Faction> getFactionsFromJson(JsonValue rawMap) {
-        List<Faction> factions = new ArrayList<>();
+    private ObjectMap<String, Faction> getFactionsFromJson(JsonValue rawMap) {
+        ObjectMap<String, Faction> factions = new ObjectMap<>();
         for (JsonValue jsonValue : rawMap) {
             Faction faction = new Faction(
                     jsonValue.getString("id"),
@@ -47,7 +48,7 @@ public class FactionsHTTPResponseListener implements Net.HttpResponseListener {
                     jsonValue.getString("icon"),
                     jsonValue.getString("flag")
             );
-            factions.add(faction);
+            factions.put(faction.getId(), faction);
         }
         return factions;
     }

@@ -48,7 +48,8 @@ public class GameUI extends Stage {
         this.accountManager = accountManager;
         selectedMapLocation = new Vector2(0, 0);
 
-        while (spaceGame.getFactions() == null || spaceGame.getFactions().size() == 0) {
+        while (spaceGame.getFactions() == null || spaceGame.getFactions().size == 0) {
+            Gdx.app.log("GameUI", "Waiting for factions to fill...");
         }
         initializeLeftMenu();
         initializeRightMenu();
@@ -169,10 +170,10 @@ public class GameUI extends Stage {
     public void selectedShipActor(ShipActor shipActor) {
         setMapLocation((int) shipActor.getX(), (int) shipActor.getY());
 
-        ShipActor selectedShipActor = shipActor;
-        factionFlagActor.setFlagFromName(selectedShipActor.getShip().getCaptain().getFaction().getFlag());
+        User selectedShipUser = shipActor.getShip().getCaptain();
+        factionFlagActor.setFlagFromName(selectedShipUser.getFaction().getFlag());
         factionFlagActor.setVisible(true);
-        selectedShipName.setText(shipActor.getShip().getCaptain().getUsername());
+        selectedShipName.setText(selectedShipUser.getUsername());
 
     }
 

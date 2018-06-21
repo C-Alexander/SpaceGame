@@ -11,8 +11,6 @@ import com.github.czyzby.websocket.WebSocketListener;
 import com.github.czyzby.websocket.data.WebSocketCloseCode;
 import com.github.czyzby.websocket.data.WebSocketException;
 import works.maatwerk.space.PlayingScreen;
-import works.maatwerk.space.SpaceGame;
-import works.maatwerk.space.networking.NetworkManager;
 
 public class LocationSocketListener implements WebSocketListener {
 
@@ -21,9 +19,7 @@ public class LocationSocketListener implements WebSocketListener {
     private final Json json;
     private final PlayingScreen playingScreen;
 
-    public LocationSocketListener(NetworkManager networkManager, SpaceGame spaceGame, PlayingScreen playingScreen) {
-        NetworkManager networkManager1 = networkManager;
-        SpaceGame spaceGame1 = spaceGame;
+    public LocationSocketListener(PlayingScreen playingScreen) {
         this.playingScreen = playingScreen;
         jsonReader = new JsonReader();
         json = new Json();
@@ -51,7 +47,6 @@ public class LocationSocketListener implements WebSocketListener {
 
     @Override
     public boolean onMessage(WebSocket webSocket, String packet) throws WebSocketException {
-        System.out.println(packet);
 
         if (packet.equalsIgnoreCase("update")) {
             playingScreen.moveAllShips();

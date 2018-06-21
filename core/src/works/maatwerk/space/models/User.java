@@ -26,7 +26,6 @@ public class User {
         this.credits = credits;
         this.token = token;
         this.factionId = factionId;
-        System.out.println(username);
         this.username = username;
     }
 

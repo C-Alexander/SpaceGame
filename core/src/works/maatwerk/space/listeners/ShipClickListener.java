@@ -15,8 +15,6 @@ public class ShipClickListener extends ClickListener {
     public void clicked(InputEvent event, float x, float y) {
         super.clicked(event, x, y);
 
-        System.out.println("hi");
-
         event.stop();
 
         shipActor.isClicked();
