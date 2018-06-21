@@ -6,18 +6,15 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.github.czyzby.websocket.WebSocket;
 import com.github.czyzby.websocket.WebSockets;
 import works.maatwerk.space.PlayingScreen;
-import works.maatwerk.space.SpaceGame;
 import works.maatwerk.space.networking.networklisteners.LocationSocketListener;
 
 public class NetworkManager {
     private final PlayingScreen playingScreen;
-    private final SpaceGame spaceGame;
     private final Json json;
     private WebSocket ws;
 
-    public NetworkManager(PlayingScreen playingScreen, SpaceGame spaceGame) {
+    public NetworkManager(PlayingScreen playingScreen) {
         this.playingScreen = playingScreen;
-        this.spaceGame = spaceGame;
         json = new Json(JsonWriter.OutputType.json);
     }
 

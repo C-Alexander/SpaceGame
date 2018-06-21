@@ -16,6 +16,7 @@ class BattleCalculator {
 
         if (defendingShip.getShield() == 0)
         modifiedAttackDamage -= Math.min(defendingShip.getArmor() / defendingShip.getHull(), modifiedAttackDamage * 0.9f);
+
         return modifiedAttackDamage;
         }
 

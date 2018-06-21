@@ -20,7 +20,7 @@ public class PlayingScreen extends ScreenAdapter {
 
     public PlayingScreen(SpaceGame spaceGame) {
         this.spaceGame = spaceGame;
-        networkManager = new NetworkManager(this, spaceGame);
+        networkManager = new NetworkManager(this);
         Texture stars = new Texture(Gdx.files.internal("stars.jpg"));
         stars.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
@@ -36,7 +36,7 @@ public class PlayingScreen extends ScreenAdapter {
     }
 
     private void initializeMap() {
-        new Thread(new UpdateMapRunnable(gameUI)).run();
+        new Thread(new UpdateMapRunnable(gameUI)).start();
     }
 
     private void initializeUI() {
