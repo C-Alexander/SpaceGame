@@ -2,11 +2,11 @@ package works.maatwerk.space.networking.runnables;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.net.HttpRequestBuilder;
 import works.maatwerk.space.IdentificationScreen;
 import works.maatwerk.space.SpaceGame;
 import works.maatwerk.space.models.User;
+import works.maatwerk.space.networking.networklisteners.LoginResponseListener;
 
 import java.util.HashMap;
 
@@ -32,35 +32,12 @@ public class LoginRunnable implements Runnable {
         contentMap.put("username", user.getUsername());
         contentMap.put("password", user.getPassword());
         httpRequestBuilder.formEncodedContent(contentMap);
-        Gdx.net.sendHttpRequest(httpRequestBuilder.build(), new Net.HttpResponseListener() {
-            @Override
-            public void handleHttpResponse(Net.HttpResponse httpResponse) {
-                if (httpResponse.getStatus().getStatusCode() == 200) {
-                    spaceGame.getAccountManager().setSessionFromResponse(httpResponse);
-                    Gdx.app.postRunnable(() -> {
-                        identificationScreen.getLoginWindow().fadeOut(0.3f);
-                        spaceGame.startGame();
-                    });
-            } else  {
-                    identificationScreen.getLoginWindow().errorLabel.setText(httpResponse.getResultAsString());
-                    identificationScreen.getLoginWindow().errorLabel.setColor(Color.RED);
-//                    spaceGame.stage.addActor(spaceGame.loginWindow.fadeIn(0.3f));
-                }
-                System.out.println(httpResponse.getResultAsString());
-            }
-
-            @Override
-            public void failed(Throwable t) {
-                System.out.println("Failed");
-                t.printStackTrace();
-                identificationScreen.getStage().addActor(identificationScreen.getLoginWindow().fadeIn(0.3f));
-            }
-
-            @Override
-            public void cancelled() {
-                System.out.println("Cancelled");
-                identificationScreen.getStage().addActor(identificationScreen.getLoginWindow().fadeIn(0.3f));
-            }
-        });
+        Gdx.net.sendHttpRequest(httpRequestBuilder.build(),
+                new LoginResponseListener(
+                        identificationScreen.getLoginWindow(),
+                        spaceGame,
+                        identificationScreen.getStage()
+                ));
     }
+
 }

@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.kotcrab.vis.ui.building.utilities.layouts.ActorLayout;
 import works.maatwerk.space.windows.FactionWindow;
 
 public class FactionFlagActor extends Actor {
@@ -25,7 +23,13 @@ public class FactionFlagActor extends Actor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                 windowStage.addActor(window.fadeIn(0.3f));
+                if (window.getStage() != null) {
+                    window.setVisible(false);
+                    window.fadeOut();
+                } else {
+                    window.setVisible(true);
+                    windowStage.addActor(window.fadeIn(0.3f));
+                }
             }
         });
         this.setSize(this.flag.getWidth(), this.flag.getHeight());

@@ -48,6 +48,8 @@ public class GameUI extends Stage {
         this.accountManager = accountManager;
         selectedMapLocation = new Vector2(0, 0);
 
+        while (spaceGame.getFactions() == null || spaceGame.getFactions().size() == 0) {
+        }
         initializeLeftMenu();
         initializeRightMenu();
 
@@ -126,6 +128,7 @@ public class GameUI extends Stage {
         CenteredTableBuilder centeredTable = new CenteredTableBuilder();
         OneColumnTableBuilder playerInfoTableBuilder = new OneColumnTableBuilder();
         User user = accountManager.getCurrentUser();
+
         playerInfoTableBuilder.append(new FactionFlagActor(user.getFaction().getFlag(),
                 new FactionWindow(user.getFaction()), this));
         playerInfoTableBuilder.append(new VisLabel(user.getUsername()));
