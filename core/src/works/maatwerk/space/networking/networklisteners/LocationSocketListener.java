@@ -7,12 +7,11 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.github.czyzby.websocket.WebSocket;
-import com.github.czyzby.websocket.WebSocketListener;
-import com.github.czyzby.websocket.data.WebSocketCloseCode;
+import com.github.czyzby.websocket.WebSocketAdapter;
 import com.github.czyzby.websocket.data.WebSocketException;
 import works.maatwerk.space.PlayingScreen;
 
-public class LocationSocketListener implements WebSocketListener {
+public class LocationSocketListener extends WebSocketAdapter {
 
 
     private final JsonReader jsonReader;
@@ -23,26 +22,6 @@ public class LocationSocketListener implements WebSocketListener {
         this.playingScreen = playingScreen;
         jsonReader = new JsonReader();
         json = new Json();
-    }
-
-    @Override
-    public boolean onClose(WebSocket webSocket, WebSocketCloseCode code, String reason) {
-        return false;
-    }
-
-    @Override
-    public boolean onOpen(WebSocket webSocket) {
-        return true;
-    }
-
-    @Override
-    public boolean onMessage(WebSocket webSocket, byte[] packet) {
-        return false;
-    }
-
-    @Override
-    public boolean onError(WebSocket webSocket, Throwable error) {
-        return false;
     }
 
     @Override

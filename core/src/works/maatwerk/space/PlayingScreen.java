@@ -20,7 +20,7 @@ public class PlayingScreen extends ScreenAdapter {
 
     public PlayingScreen(SpaceGame spaceGame) {
         this.spaceGame = spaceGame;
-        networkManager = new NetworkManager(this);
+        networkManager = new NetworkManager();
         Texture stars = new Texture(Gdx.files.internal("stars.jpg"));
         stars.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
@@ -44,7 +44,7 @@ public class PlayingScreen extends ScreenAdapter {
     }
 
     private void initializeWebSockets() {
-        networkManager.connect();
+        networkManager.connect(this);
     }
 
     @Override

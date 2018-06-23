@@ -4,24 +4,27 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.github.czyzby.websocket.WebSocket;
+import com.github.czyzby.websocket.WebSocketListener;
 import com.github.czyzby.websocket.WebSockets;
 import works.maatwerk.space.PlayingScreen;
 import works.maatwerk.space.networking.networklisteners.LocationSocketListener;
 
 public class NetworkManager {
-    private final PlayingScreen playingScreen;
     private final Json json;
     private WebSocket ws;
 
-    public NetworkManager(PlayingScreen playingScreen) {
-        this.playingScreen = playingScreen;
+    public NetworkManager() {
         json = new Json(JsonWriter.OutputType.json);
     }
 
-    public void connect() {
+    public void connect(PlayingScreen playingScreen) {
+        connect(new LocationSocketListener(playingScreen));
+    }
+
+    public void connect(WebSocketListener webSocketListener) {
         ws = WebSockets.newSocket("ws://localhost:9000/game");
         ws.setSerializeAsString(true);
-        ws.addListener(new LocationSocketListener(playingScreen));
+        ws.addListener(webSocketListener);
 
         new Thread(() -> ws.connect()).start();
     }
@@ -36,4 +39,7 @@ public class NetworkManager {
         ws.send(packet);
     }
 
+    public WebSocket getWs() {
+        return ws;
+    }
 }
