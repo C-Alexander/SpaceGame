@@ -1,9 +1,6 @@
 package works.maatwerk.space.models;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
-import works.maatwerk.space.models.Ship;
-import works.maatwerk.space.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,20 +15,16 @@ public class Map {
         this.name = name;
     }
 
+    public Map(JsonValue map) {
+        this.id = map.getString("id");
+        this.name = map.getString("name");
+
+        createShipsFromJson(map.get("ships"));
+    }
+
     public void createShipsFromJson(JsonValue ships) {
         for (JsonValue ship : ships) {
-            Ship newShip = new Ship(ship.getString("id"),
-                    ship.getInt("hull"),
-                    ship.getInt("shield"),
-                    ship.getInt("armor"),
-                    new Vector2(ship.getInt("xPos"), ship.getInt("yPos")),
-                    new User(ship.get("users").child().getString("username")));
-            newShip.setDestination(new Vector2(
-                    ship.getInt("xDestination", (int)newShip.getLocation().x),
-                    ship.getInt("yDestination", (int)newShip.getLocation().y)
-                    ));
-
-            newShip.getCaptain().setFactionId(ship.get("users").child().getString("factionId"));
+            Ship newShip = new Ship(ship);
             this.ships.add(newShip);
         }
     }

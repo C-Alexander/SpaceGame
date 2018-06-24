@@ -1,6 +1,9 @@
 package works.maatwerk.space.models;
 
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 
 public class Ship {
     private String id;
@@ -18,6 +21,31 @@ public class Ship {
         this.armor = armor;
         this.location = location;
         this.captain = captain;
+    }
+
+    public Ship(Net.HttpResponse httpResponse) {
+        JsonReader jsonReader = new JsonReader();
+        JsonValue ship = jsonReader.parse(httpResponse.getResultAsString());
+
+        setFromJson(ship);
+    }
+
+    public Ship(JsonValue ship) {
+        setFromJson(ship);
+    }
+
+    private void setFromJson(JsonValue ship) {
+        setId(ship.getString("id"));
+        setHull(ship.getInt("hull"));
+        setShield(ship.getInt("shield"));
+        setArmor(ship.getInt("armor"));
+        setLocation(new Vector2(ship.getInt("xPos"), ship.getInt("yPos")));
+        setCaptain(new User(ship.get("users").child().getString("username")));
+        setDestination(new Vector2(
+                ship.getInt("xDestination", (int) this.location.x),
+                ship.getInt("yDestination", (int) this.location.y)
+        ));
+        getCaptain().setFactionId(ship.get("users").child().getString("factionId"));
     }
 
     public String getId() {

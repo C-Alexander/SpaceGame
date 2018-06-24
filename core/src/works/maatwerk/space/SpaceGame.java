@@ -24,11 +24,7 @@ public class SpaceGame extends Game {
     public AccountManager getAccountManager() {
         return accountManager;
     }
-
-    public void setAccountManager(AccountManager accountManager) {
-        this.accountManager = accountManager;
-    }
-
+    
     public void startGame() {
         this.setScreen(new PlayingScreen(this));
     }

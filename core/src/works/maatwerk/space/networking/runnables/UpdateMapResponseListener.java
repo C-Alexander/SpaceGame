@@ -25,8 +25,7 @@ class UpdateMapResponseListener implements Net.HttpResponseListener {
             JsonReader jsonReader = new JsonReader();
             JsonValue rawMap = jsonReader.parse(httpResponse.getResultAsString());
 
-            Map map = new Map(rawMap.child.getString("id"), rawMap.child.getString("name"));
-            map.createShipsFromJson(rawMap.child.get("ships"));
+            Map map = new Map(rawMap.child);
 
             Gdx.app.postRunnable(() -> gameUI.replaceSolarSystem(map));
         } catch (Exception e) {

@@ -21,6 +21,7 @@ import works.maatwerk.space.listeners.setDestinationListener;
 import works.maatwerk.space.models.Map;
 import works.maatwerk.space.models.Ship;
 import works.maatwerk.space.models.User;
+import works.maatwerk.space.networking.runnables.GetShipByIdRunnable;
 import works.maatwerk.space.windows.FactionWindow;
 
 import java.util.ArrayList;
@@ -161,9 +162,8 @@ public class GameUI extends Stage {
         for (Ship ship : map.ships) {
             if (ship.getCaptain().getUsername().equalsIgnoreCase(spaceGame.getAccountManager().getCurrentUser().getUsername()))
                 spaceGame.getAccountManager().setCurrentShip(ship);
-            ShipActor shipActor = new ShipActor(ship, this, spaceGame);
-            shipActors.add(shipActor);
-            tacticalScreen.addActor(shipActor);
+
+            addShip(ship);
         }
     }
 
@@ -212,7 +212,12 @@ public class GameUI extends Stage {
     }
 
     public void updateDestination(String shipId, Vector2 destination) {
-        ((ShipActor) tacticalScreen.findActor(shipId)).getShip().setDestination(destination);
+        if (tacticalScreen.findActor(shipId) == null) addShipById(shipId);
+        else ((ShipActor) tacticalScreen.findActor(shipId)).getShip().setDestination(destination);
+    }
+
+    private void addShipById(String shipId) {
+        new Thread(new GetShipByIdRunnable(this, shipId)).start();
     }
 
     public void moveAllShips() {
@@ -230,5 +235,11 @@ public class GameUI extends Stage {
                 shipActor.setPosition((int) location.x, (int) location.y);
             }
         }
+    }
+
+    public void addShip(Ship newShip) {
+        ShipActor shipActor = new ShipActor(newShip, this, spaceGame);
+        shipActors.add(shipActor);
+        tacticalScreen.addActor(shipActor);
     }
 }
